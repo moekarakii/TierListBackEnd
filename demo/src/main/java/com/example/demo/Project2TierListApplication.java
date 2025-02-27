@@ -16,7 +16,7 @@ public class Project2TierListApplication {
 	}
 	 @GetMapping("/hello")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-      return String.format("Hello Hello  %s!", name);
+      return String.format("Hi there  %s!", name);
     }
 	 @RequestMapping("/")
   public String home() {
