@@ -18,18 +18,25 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // register
+    // user register
+    @PostMapping("/register")
+    public String registerUser(@RequestBody User user) {
+        return userService.registerUser(user);
+    }
+
+    // user login
     @PostMapping("/login")
     public String loginUser(@RequestBody User user) {
         boolean isValid = userService.loginUser(user.getUsername(), user.getPassword());
         return isValid ? "Login successful!" : "Invalid username or password";
     }
 
-    // return users (test only)
+    // test only, return all users
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 }
+
 
 
