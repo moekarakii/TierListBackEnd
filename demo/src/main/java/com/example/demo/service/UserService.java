@@ -11,20 +11,19 @@ import java.util.Optional;
 public class UserService {
     private final List<User> users = new ArrayList<>();
 
-    // test only, add one default user
+    // Constructor to add a default user for testing
     public UserService() {
         users.add(new User("test", "test@example.com", "123456"));
     }
 
-    // login auth
+    // Authenticate user login
     public boolean loginUser(String username, String password) {
         return users.stream()
                 .anyMatch(user -> user.getUsername().equals(username) && user.getPassword().equals(password));
     }
 
-    // user register
+    // Register a new user
     public String registerUser(User user) {
-        // check if user already exists
         Optional<User> existingUser = users.stream()
                 .filter(u -> u.getUsername().equals(user.getUsername()))
                 .findFirst();
@@ -37,10 +36,11 @@ public class UserService {
         return "User registered successfully!";
     }
 
-    // return all users
+    // Retrieve all registered users
     public List<User> getAllUsers() {
         return users;
     }
 }
+
 
 

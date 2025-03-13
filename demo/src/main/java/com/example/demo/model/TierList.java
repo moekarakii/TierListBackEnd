@@ -6,20 +6,29 @@ public class TierList {
     private String name;
     private List<String> items;
 
-    // default
+    // Default constructor
     public TierList() {}
 
-    // prototype TierList builder
+    // Constructor with parameters
     public TierList(String name, List<String> items) {
         this.name = name;
         this.items = items;
     }
 
-    // getter and setter methods
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    // Getter and Setter methods
+    public String getName() {
+        return name;
+    }
 
-    public List<String> getItems() { return items; }
-    public void setItems(List<String> items) { this.items = items; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<String> getItems() {
+        return items;
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
+    }
 }
-
