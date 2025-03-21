@@ -28,5 +28,14 @@ public class TierCategoryController {
     public TierCategory createTier(@RequestBody TierCategory tier) {
         return tierCategoryService.createTier(tier);
     }
-
+    @GetMapping("/debug/print")
+    public String printTiers() {
+        List<TierCategory> tiers = tierCategoryService.getAllTiers();
+        System.out.println("===== Current Tiers in DB =====");
+        for (TierCategory tier : tiers) {
+            System.out.println(tier);
+        }
+        System.out.println("================================");
+        return "Check Heroku logs for DB contents!";
+    }
 }
