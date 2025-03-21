@@ -5,6 +5,11 @@ import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "http://localhost:5173") // Allow frontend access
@@ -22,15 +27,10 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * Handles user registration.
-     * Accepts a JSON request containing username, email, and password.
-     * Returns a success message if registration is successful.
-     */
+    // ✅ Register new user
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         String response = userService.registerUser(user);
-
         if (response.equals("User registered successfully")) {
             return ResponseEntity.ok(response);
         } else {
@@ -38,50 +38,61 @@ public class AuthController {
         }
     }
 
-    /**
-     * Handles user login.
-     * Accepts a JSON request with email and password.
-     * Returns a success message if credentials are valid, otherwise returns an error.
-     */
+    // ✅ Login using username, return firstName, lastName, username
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user) {
-        boolean isAuthenticated = userService.loginUser(user.getEmail(), user.getPassword());
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        Optional<User> storedUserOpt = userService.login(user.getUsername(), user.getPassword());
 
-        return isAuthenticated
-                ? ResponseEntity.ok("Login successful")
-                : ResponseEntity.status(401).body("Invalid credentials");
+        if (storedUserOpt.isEmpty()) {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+
+        User storedUser = storedUserOpt.get();
+        Map<String, Object> response = new HashMap<>();
+        response.put("firstName", storedUser.getFirstName());
+        response.put("lastName", storedUser.getLastName());
+        response.put("username", storedUser.getUsername());
+
+        return ResponseEntity.ok(response);
     }
 
-    /**
-     * Retrieves all registered users.
-     * Returns a list of users currently stored.
-     */
+    // ✅ New endpoint to get user by username (for dashboard)
+    @GetMapping("/user")
+    public ResponseEntity<?> getUser(@RequestParam String username) {
+        Optional<User> userOpt = userService.getUserByUsername(username);
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        User user = userOpt.get();
+        Map<String, Object> response = new HashMap<>();
+        response.put("firstName", user.getFirstName());
+        response.put("lastName", user.getLastName());
+        response.put("username", user.getUsername());
+
+        return ResponseEntity.ok(response);
+    }
+
+    // ✅ Get all users
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    /**
-     * Updates user information based on email.
-     * Accepts a JSON request with updated user data.
-     */
-    @PutMapping("/update/{email}")
-    public ResponseEntity<String> updateUser(@PathVariable String email, @RequestBody User updatedUser) {
-        String response = userService.updateUser(email, updatedUser);
-
-        return response.equals("User updated successfully")
-                ? ResponseEntity.ok(response)
-                : ResponseEntity.status(404).body(response);
+    // ✅ Update user by ID
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        Optional<User> updated = userService.updateUser(id, updatedUser);
+        return updated.isPresent()
+                ? ResponseEntity.ok("User updated successfully")
+                : ResponseEntity.status(404).body("User not found");
     }
 
-    /**
-     * Deletes a user based on email.
-     * Returns success or failure message.
-     */
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<String> deleteUser(@PathVariable String email) {
-        String response = userService.deleteUser(email);
-
+    // ✅ Delete user by ID
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        String response = userService.deleteUser(id);
         return response.equals("User deleted successfully")
                 ? ResponseEntity.ok(response)
                 : ResponseEntity.status(404).body(response);
