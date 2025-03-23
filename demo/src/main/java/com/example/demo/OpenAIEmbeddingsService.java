@@ -15,7 +15,7 @@ import com.example.demo.model.EmbeddingResponse;
 @Service
 public class OpenAIEmbeddingsService {
 
-	@Value("${openai.api.key}")
+	@Value("${openai.api-key}")
 	private String apiKey;
 
 	private final RestTemplate restTemplate;
