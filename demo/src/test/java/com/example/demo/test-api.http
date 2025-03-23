@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/tiers
+Content-Type: application/json
+
+{
+    "subject": "Cakes",
+    "start_time": "2025-03-22",
+    "end_time": "2025-03-22"
+}
