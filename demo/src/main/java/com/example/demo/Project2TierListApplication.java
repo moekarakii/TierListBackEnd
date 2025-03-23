@@ -22,7 +22,7 @@ public class Project2TierListApplication {
 
 	@RequestMapping("/")
 	public String home() {
-		return "Hello Docker World";
+		return "This is my app";
 	}
 
 }
