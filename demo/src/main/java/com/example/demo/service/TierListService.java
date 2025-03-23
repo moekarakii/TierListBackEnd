@@ -1,11 +1,15 @@
 package com.example.demo.service;
 
 import com.example.demo.model.TierList;
+import com.example.demo.model.TierCategory;
+import com.example.demo.model.Time;
 import com.example.demo.repository.TierListRepository;
+import com.example.demo.repository.TierCategoryRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This service handles all business logic related to Tier List entries.
@@ -15,9 +19,11 @@ import java.util.Optional;
 public class TierListService {
 
     private final TierListRepository tierListRepository;
+    private final TierCategoryRepository tierCategoryRepository;
 
-    public TierListService(TierListRepository tierListRepository) {
+    public TierListService(TierListRepository tierListRepository, TierCategoryRepository tierCategoryRepository) {
         this.tierListRepository = tierListRepository;
+        this.tierCategoryRepository = tierCategoryRepository;
     }
 
     // Create a new tier list entry
@@ -36,7 +42,7 @@ public class TierListService {
     }
 
     // Get all entries under a specific tier category
-    public List<TierList> getEntriesByTierId(Integer tierId) {
+    public List<TierList> getEntriesByTierId(Long tierId) {
         return tierListRepository.findByTierId(tierId);
     }
 
@@ -53,5 +59,30 @@ public class TierListService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get all tier list entries for the current week,
+     * grouped by user ID.
+     */
+    public Map<Integer, List<TierList>> getCurrentWeekEntriesGroupedByUser() {
+        // Get the current week's start and end date
+        LocalDate start = LocalDate.parse(Time.getCurrentBeginningOfWeek());
+        LocalDate end = LocalDate.parse(Time.getCurrentEndOfWeek());
+
+        // Find the tier category that matches this week's range
+        Optional<TierCategory> categoryOptional = tierCategoryRepository.findByStart_timeAndEnd_time(start, end);
+        if (categoryOptional.isEmpty()) {
+            return new HashMap<>(); // No category found for this week
+        }
+
+        TierCategory category = categoryOptional.get();
+
+        // Find all entries under this week's tier category
+        List<TierList> allEntries = tierListRepository.findByTierId(category.getTierId());
+
+        // Group entries by user ID
+        return allEntries.stream()
+                .collect(Collectors.groupingBy(TierList::getUserId));
     }
 }
