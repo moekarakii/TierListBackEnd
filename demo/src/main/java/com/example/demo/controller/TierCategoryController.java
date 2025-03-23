@@ -38,4 +38,5 @@ public class TierCategoryController {
         System.out.println("================================");
         return "Check Heroku logs for DB contents!";
     }
+    
 }
