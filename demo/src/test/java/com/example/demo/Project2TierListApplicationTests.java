@@ -10,4 +10,9 @@ class Project2TierListApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void OpenAIEmbeddingsServiceTest() {
+
+	}
+
 }

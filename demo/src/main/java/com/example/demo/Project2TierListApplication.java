@@ -6,12 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import io.github.cdimascio.dotenv.Dotenv;
 
 @SpringBootApplication
 @RestController
 public class Project2TierListApplication {
 
 	public static void main(String[] args) {
+		Dotenv dotenv = Dotenv.load();
+		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 		SpringApplication.run(Project2TierListApplication.class, args);
 	}
 
@@ -22,7 +25,7 @@ public class Project2TierListApplication {
 
 	@RequestMapping("/")
 	public String home() {
-		return "Hello Docker World";
+		return "Hello Docker World!!!!";
 	}
 
 }
