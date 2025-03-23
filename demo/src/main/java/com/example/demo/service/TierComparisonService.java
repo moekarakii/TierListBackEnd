@@ -2,10 +2,13 @@ package com.example.demo.service;
 
 import com.example.demo.model.EmbeddingResponse;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TierComparisonService {
+
     private final OpenAIEmbeddingsService embeddingsService;
 
     public TierComparisonService(OpenAIEmbeddingsService embeddingsService) {
@@ -13,36 +16,55 @@ public class TierComparisonService {
     }
 
     /**
-     * Takes a user's tier list, gets the embeddings, and returns the vector.
+     * Compare two tier lists by generating embeddings and computing similarity.
      */
-    public List<Double> getTierEmbedding(List<String> tierEntries, String category) {
-        // You might concatenate or format the tiers + category into a single string
-        String combinedInput = String.join(", ", tierEntries) + " - " + category;
-        EmbeddingResponse response = embeddingsService.getEmbedding(combinedInput);
+    public double compareTierLists(
+            Map<String, List<String>> user1Tiers,
+            Map<String, List<String>> user2Tiers,
+            String category) {
+        // Convert each user's tier list to text
+        String user1Input = tierListToString(user1Tiers, category);
+        String user2Input = tierListToString(user2Tiers, category);
 
-        // Assume the response has a single data item
-        return response.getData().get(0).getEmbedding();
-    }
+        // Get embeddings
+        List<Double> embedding1 = getEmbeddingVector(user1Input);
+        List<Double> embedding2 = getEmbeddingVector(user2Input);
 
-    /**
-     * Compares two embedding vectors and returns a similarity score or boolean.
-     */
-    public double compareEmbeddings(List<Double> embedding1, List<Double> embedding2) {
-        // Example: Cosine similarity or some other metric
+        // Compare with cosine similarity
         return cosineSimilarity(embedding1, embedding2);
     }
 
-    private double cosineSimilarity(List<Double> vec1, List<Double> vec2) {
-        // Very rough example
-        double dot = 0.0;
-        double norm1 = 0.0;
-        double norm2 = 0.0;
+    private List<Double> getEmbeddingVector(String input) {
+        EmbeddingResponse resp = embeddingsService.getEmbedding(input);
+        // For simplicity, assume there's exactly one data item
+        return resp.getData().get(0).getEmbedding();
+    }
 
-        for (int i = 0; i < vec1.size(); i++) {
-            dot += vec1.get(i) * vec2.get(i);
-            norm1 += vec1.get(i) * vec1.get(i);
-            norm2 += vec2.get(i) * vec2.get(i);
+    private String tierListToString(Map<String, List<String>> tierList, String category) {
+        // Example: "Fruits S Tier: Apple, Orange | A Tier: Banana | ..."
+        StringBuilder sb = new StringBuilder(category).append(" ");
+        tierList.forEach((tierName, items) -> {
+            sb.append(tierName).append(": ")
+                    .append(String.join(", ", items))
+                    .append(" | ");
+        });
+        return sb.toString();
+    }
+
+    private double cosineSimilarity(List<Double> vec1, List<Double> vec2) {
+        if (vec1.size() != vec2.size()) {
+            throw new IllegalArgumentException("Vectors must be the same size");
         }
-        return dot / (Math.sqrt(norm1) * Math.sqrt(norm2));
+        double dot = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+        for (int i = 0; i < vec1.size(); i++) {
+            double a = vec1.get(i);
+            double b = vec2.get(i);
+            dot += a * b;
+            normA += a * a;
+            normB += b * b;
+        }
+        return dot / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 }
