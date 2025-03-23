@@ -1,9 +1,8 @@
-### Add a new tier to Heroku
-POST https://project2db-b60469abc86b.herokuapp.com/api/tiers
-Content-Type: application/json
+curl -X POST https://project2db-b60469abc86b.herokuapp.com/api/tiers \
 
-{
-  "subject": "Music",
-  "start_time": "2025-03-25",
-  "end_time": "2025-03-26"
-}
+-H "Content-Type: application/json" \
+-d '{
+  "subject": "Hats",
+  "start_time": "2024-03-22",
+  "end_time": "2024-03-30"
+}'
