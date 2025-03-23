@@ -11,7 +11,7 @@ import jakarta.annotation.PostConstruct;
 
 @Service
 public class TierCategoryService {
-     private final TierCategoryRepository tierCategoryRepository;
+    private final TierCategoryRepository tierCategoryRepository;
 
     public TierCategoryService(TierCategoryRepository tierCategoryRepository) {
         this.tierCategoryRepository = tierCategoryRepository;
@@ -24,8 +24,8 @@ public class TierCategoryService {
     public TierCategory createTier(TierCategory tier) {
         return tierCategoryRepository.save(tier);
     }
-    
-      @PostConstruct
+
+    @PostConstruct
     public void printAllTiersAtStartup() {
         List<TierCategory> tiers = tierCategoryRepository.findAll();
         System.out.println("===== Current Tiers in DB =====");

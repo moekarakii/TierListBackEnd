@@ -5,6 +5,7 @@ import com.example.demo.service.TierListService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This controller handles all HTTP requests related to tier list entries.
@@ -41,7 +42,7 @@ public class TierListController {
 
     // Get entries by tier category ID
     @GetMapping("/tier/{tierId}")
-    public List<TierList> getEntriesByTierId(@PathVariable Integer tierId) {
+    public List<TierList> getEntriesByTierId(@PathVariable Long tierId) {
         return tierListService.getEntriesByTierId(tierId);
     }
 
@@ -59,9 +60,14 @@ public class TierListController {
         boolean deleted = tierListService.deleteEntryById(entryId);
         return deleted ? "Entry deleted successfully" : "Entry not found";
     }
+
+    /**
+     * Get all tier list entries for the current week,
+     * grouped by user ID.
+     */
+    @GetMapping("/week")
+    public Map<Integer, List<TierList>> getEntriesGroupedByUserThisWeek() {
+        return tierListService.getCurrentWeekEntriesGroupedByUser();
+    }
+
 }
-
-
-
-
-

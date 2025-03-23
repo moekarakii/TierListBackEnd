@@ -16,7 +16,7 @@ public interface TierListRepository extends JpaRepository<TierList, Integer> {
     List<TierList> findByUserId(Integer userId);
 
     // Find all entries under a specific tier category
-    List<TierList> findByTierId(Integer tierId);
+    List<TierList> findByTierId(Long tierId);
 
     // Find all entries by a user in a specific category
     List<TierList> findByUserIdAndTierId(Integer userId, Integer tierId);
