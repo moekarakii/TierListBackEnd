@@ -1,81 +1,88 @@
 package com.example.demo.service;
 
 import com.example.demo.model.TierList;
+import com.example.demo.model.TierCategory;
+import com.example.demo.model.Time;
+import com.example.demo.repository.TierListRepository;
+import com.example.demo.repository.TierCategoryRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
+/**
+ * This service handles all business logic related to Tier List entries.
+ * It provides methods to create, retrieve, and delete entries based on user or category.
+ */
 @Service
 public class TierListService {
 
-    // Temporary storage for Tier Lists (since we are not using a database)
-    private final List<TierList> tierLists = new ArrayList<>();
+    private final TierListRepository tierListRepository;
+    private final TierCategoryRepository tierCategoryRepository;
 
-    /**
-     * Create a new Tier List.
-     * @param tierList The Tier List object to add.
-     * @return Response message indicating success.
-     */
-    public String createTierList(TierList tierList) {
-        tierLists.add(tierList);
-        return "Tier List created successfully!";
+    public TierListService(TierListRepository tierListRepository, TierCategoryRepository tierCategoryRepository) {
+        this.tierListRepository = tierListRepository;
+        this.tierCategoryRepository = tierCategoryRepository;
     }
 
-    /**
-     * Retrieve all Tier Lists.
-     * @return List of all stored Tier Lists.
-     */
-    public List<TierList> getAllTierLists() {
-        return tierLists;
+    // Create a new tier list entry
+    public TierList createTierEntry(TierList tierList) {
+        return tierListRepository.save(tierList);
     }
 
-    /**
-     * Retrieve a specific Tier List by its name.
-     * @param name The name of the Tier List to retrieve.
-     * @return The found Tier List or null if not found.
-     */
-    public TierList getTierListByName(String name) {
-        for (TierList t : tierLists) {
-            if (t.getName().equalsIgnoreCase(name)) {
-                return t;
-            }
+    // Retrieve all tier list entries
+    public List<TierList> getAllEntries() {
+        return tierListRepository.findAll();
+    }
+
+    // Get all entries created by a specific user
+    public List<TierList> getEntriesByUserId(Integer userId) {
+        return tierListRepository.findByUserId(userId);
+    }
+
+    // Get all entries under a specific tier category
+    public List<TierList> getEntriesByTierId(Long tierId) {
+        return tierListRepository.findByTierId(tierId);
+    }
+
+    // Get all entries by a user in a specific tier category
+    public List<TierList> getEntriesByUserIdAndTierId(Integer userId, Integer tierId) {
+        return tierListRepository.findByUserIdAndTierId(userId, tierId);
+    }
+
+    // Delete an entry by its ID
+    public boolean deleteEntryById(Integer entryId) {
+        Optional<TierList> existing = tierListRepository.findById(entryId);
+        if (existing.isPresent()) {
+            tierListRepository.deleteById(entryId);
+            return true;
         }
-        return null;
+        return false;
     }
 
     /**
-     * Update an existing Tier List based on its name.
-     * @param name The name of the Tier List to be updated.
-     * @param updatedTierList The new Tier List object containing updated data.
-     * @return Response message indicating success or failure.
+     * Get all tier list entries for the current week,
+     * grouped by user ID.
      */
-    public String updateTierList(String name, TierList updatedTierList) {
-        for (TierList t : tierLists) {
-            if (t.getName().equalsIgnoreCase(name)) {
-                t.setName(updatedTierList.getName());
-                t.setItems(updatedTierList.getItems());
-                return "Tier List updated successfully!";
-            }
-        }
-        return "Tier List not found!";
-    }
+    public Map<Integer, List<TierList>> getCurrentWeekEntriesGroupedByUser() {
+        // Get the current week's start and end date
+        LocalDate start = LocalDate.parse(Time.getCurrentBeginningOfWeek());
+        LocalDate end = LocalDate.parse(Time.getCurrentEndOfWeek());
 
-    /**
-     * Delete an existing Tier List based on its name.
-     * @param name The name of the Tier List to be deleted.
-     * @return Response message indicating success or failure.
-     */
-    public String deleteTierList(String name) {
-        for (TierList t : tierLists) {
-            if (t.getName().equalsIgnoreCase(name)) {
-                tierLists.remove(t);
-                return "Tier List deleted successfully!";
-            }
+        // Find the tier category that matches this week's range
+        Optional<TierCategory> categoryOptional = tierCategoryRepository.findByStart_timeAndEnd_time(start, end);
+        if (categoryOptional.isEmpty()) {
+            return new HashMap<>(); // No category found for this week
         }
-        return "Tier List not found!";
+
+        TierCategory category = categoryOptional.get();
+
+        // Find all entries under this week's tier category
+        List<TierList> allEntries = tierListRepository.findByTierId(category.getTierId());
+
+        // Group entries by user ID
+        return allEntries.stream()
+                .collect(Collectors.groupingBy(TierList::getUserId));
     }
 }
-
-
-
