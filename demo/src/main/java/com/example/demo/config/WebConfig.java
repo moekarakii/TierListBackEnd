@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         // Enable CORS for frontend domains
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "https://project2db.herokuapp.com")
+                .allowedOrigins("http://localhost:5173", "https://project2db-b60469abc86b.herokuapp.com/")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true);
     }
