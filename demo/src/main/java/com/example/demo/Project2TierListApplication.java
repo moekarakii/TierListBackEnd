@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication(scanBasePackages = "com.example.demo")
+// @SpringBootApplication(scanBasePackages = "com.example.demo")
+
+@SpringBootApplication
 @RestController
 public class Project2TierListApplication {
 
