@@ -8,11 +8,16 @@ public class TierCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tier_id")
     private Long tierId;
 
+    @Column(name = "subject")
     private String subject;
 
+    @Column(name = "start_time")
     private LocalDate start_time;
+    
+    @Column(name = "end_time")
     private LocalDate end_time;
 
     // Default constructor

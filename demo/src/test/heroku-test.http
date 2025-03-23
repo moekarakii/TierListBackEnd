@@ -1,8 +1,8 @@
-curl -X POST https://project2db-b60469abc86b.herokuapp.com/api/tiers \
+POST https://project2db-b60469abc86b.herokuapp.com/api/tiers 
+Content-Type: application/json
 
--H "Content-Type: application/json" \
--d '{
-  "subject": "Hats",
-  "start_time": "2024-03-22",
-  "end_time": "2024-03-30"
-}'
+{
+    "subject": "Cakes",
+    "start_time": "2025-03-22",
+    "end_time": "2025-03-22"
+}
