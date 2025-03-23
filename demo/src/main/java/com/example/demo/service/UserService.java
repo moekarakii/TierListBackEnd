@@ -1,72 +1,72 @@
 package com.example.demo.service;
 
 import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
-    private final List<User> users = new ArrayList<>();
 
-    /**
-     * Registers a new user by adding them to the list.
-     * Ensures that the email is unique.
-     */
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // Register user if email and username are unique
     public String registerUser(User user) {
-        // Check if email already exists
-        for (User existingUser : users) {
-            if (existingUser.getEmail().equals(user.getEmail())) {
-                return "Email already in use";
-            }
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return "Username already in use";
         }
-        users.add(user);
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return "Email already in use";
+        }
+
+        userRepository.save(user);
         return "User registered successfully";
     }
 
-    /**
-     * Authenticates a user based on email and password.
-     * Returns true if the email and password match an existing user.
-     */
-    public boolean loginUser(String email, String password) {
-        for (User user : users) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return true;
-            }
-        }
-        return false;
+    // Login using username and password
+    public Optional<User> login(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password);
     }
 
-    /**
-     * Retrieves all registered users.
-     */
+    // Get user by username
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    // Get all users
     public List<User> getAllUsers() {
-        return users;
+        return userRepository.findAll();
     }
 
-    /**
-     * Updates a user's information based on email.
-     * Returns a success message if the user is found and updated.
-     */
-    public String updateUser(String email, User updatedUser) {
-        for (User user : users) {
-            if (user.getEmail().equals(email)) {
-                user.setUsername(updatedUser.getUsername());
-                user.setPassword(updatedUser.getPassword());
-                return "User updated successfully";
-            }
+    // Update user by ID
+    public Optional<User> updateUser(Long id, User updatedUser) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isEmpty()) {
+            return Optional.empty();
         }
-        return "User not found";
+
+        User user = userOpt.get();
+        user.setUsername(updatedUser.getUsername());
+        user.setEmail(updatedUser.getEmail());
+        user.setPassword(updatedUser.getPassword());
+        user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
+
+        return Optional.of(userRepository.save(user));
     }
 
-    /**
-     * Deletes a user based on email.
-     * Returns a success message if the user is found and removed.
-     */
-    public String deleteUser(String email) {
-        return users.removeIf(user -> user.getEmail().equals(email))
-                ? "User deleted successfully"
-                : "User not found";
+    // Delete user by ID
+    public String deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            return "User not found";
+        }
+        userRepository.deleteById(id);
+        return "User deleted successfully";
     }
 }
