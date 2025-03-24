@@ -15,8 +15,19 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class Project2TierListApplication {
 
 	public static void main(String[] args) {
-		Dotenv dotenv = Dotenv.load();
-		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+		// Dotenv dotenv = Dotenv.load();
+		// dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+		// SpringApplication.run(Project2TierListApplication.class, args);
+		// Only load .env locally
+		String dyno = System.getenv("DYNO");
+		if (dyno == null) { // Locally
+			System.out.println("Running locally. Loading .env...");
+			Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+			dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+		} else {
+			System.out.println("Running on Heroku. Skipping .env loading...");
+		}
+
 		SpringApplication.run(Project2TierListApplication.class, args);
 	}
 
