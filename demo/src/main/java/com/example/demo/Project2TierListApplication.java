@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import io.github.cdimascio.dotenv.Dotenv;
 
+// @SpringBootApplication(scanBasePackages = "com.example.demo")
+
 @SpringBootApplication
 @RestController
 public class Project2TierListApplication {
@@ -25,7 +27,7 @@ public class Project2TierListApplication {
 
 	@RequestMapping("/")
 	public String home() {
-		return "Hello Docker World!!!!";
+		return "This is my app";
 	}
 
 }
