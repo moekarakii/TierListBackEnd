@@ -8,6 +8,7 @@ import java.util.Map;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -84,7 +85,7 @@ public class UserService {
         // 1) Compute embeddings for each user
         Map<Long, List<Double>> userEmbeddings = new HashMap<>();
         for (User user : allUsers) {
-            List<Double> embedding = tierComparisonService.getTierListEmbedding(user.getTierList(), user.getCategory());
+            List<Double> embedding = tierComparisonService.getEmbeddingVector(user.getTierList());
             userEmbeddings.put(user.getId(), embedding);
         }
 
