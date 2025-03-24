@@ -129,4 +129,8 @@ public class User {
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
+
+    public String getTierList() {
+        return tierListJson;
+    }
 }
