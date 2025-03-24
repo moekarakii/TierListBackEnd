@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.BeforeAll;
+import com.example.demo.service.OpenAIEmbeddingsService;
 
 @SpringBootTest
 class OpenAIEmbeddingsServiceTest {

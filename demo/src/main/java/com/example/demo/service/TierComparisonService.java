@@ -34,7 +34,7 @@ public class TierComparisonService {
         return cosineSimilarity(embedding1, embedding2);
     }
 
-    private List<Double> getEmbeddingVector(String input) {
+    public List<Double> getEmbeddingVector(String input) {
         EmbeddingResponse resp = embeddingsService.getEmbedding(input);
         // For simplicity, assume there's exactly one data item
         return resp.getData().get(0).getEmbedding();
@@ -51,7 +51,7 @@ public class TierComparisonService {
         return sb.toString();
     }
 
-    private double cosineSimilarity(List<Double> vec1, List<Double> vec2) {
+    public double cosineSimilarity(List<Double> vec1, List<Double> vec2) {
         if (vec1.size() != vec2.size()) {
             throw new IllegalArgumentException("Vectors must be the same size");
         }
