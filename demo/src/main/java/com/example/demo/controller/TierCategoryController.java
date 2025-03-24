@@ -12,9 +12,9 @@ import com.example.demo.service.TierCategoryService;
 @RestController
 @RequestMapping("/api/tiers")
 public class TierCategoryController {
-      private final TierCategoryService tierCategoryService;
+    private final TierCategoryService tierCategoryService;
 
-   
+
     public TierCategoryController(TierCategoryService tierCategoryService) {
         this.tierCategoryService = tierCategoryService;
     }
@@ -38,5 +38,4 @@ public class TierCategoryController {
         System.out.println("================================");
         return "Check Heroku logs for DB contents!";
     }
-    
 }

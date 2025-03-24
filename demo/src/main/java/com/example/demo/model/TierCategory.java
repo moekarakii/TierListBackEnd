@@ -8,6 +8,7 @@ public class TierCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+  
     @Column(name = "tier_id")
     private Long tierId;
 
