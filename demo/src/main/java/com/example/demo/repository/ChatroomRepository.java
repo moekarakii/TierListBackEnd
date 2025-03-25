@@ -16,9 +16,7 @@ public interface ChatroomRepository extends JpaRepository<Chatroom, Long> {
 
     Optional<Chatroom> findByTopicAndGroupIdAndWeekStartAndWeekEnd(
             String topic,
-            String groupId,
-            LocalDate weekStart,
-            LocalDate weekEnd
-    );
+            String group_id,
+            LocalDate week_start,
+            LocalDate week_end);
 }
-
