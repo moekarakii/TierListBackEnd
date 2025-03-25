@@ -7,16 +7,17 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+
 @Configuration
 public class CorsGlobalConfig {
 
-     @Bean
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
-            "http://localhost:5173", 
-            "https://project2db-b60469abc86b.herokuapp.com"
-            
+                "http://localhost:5173",
+                "https://project2db-b60469abc86b.herokuapp.com"
+
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));

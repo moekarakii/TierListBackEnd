@@ -24,17 +24,18 @@ public class User {
     private String password;
 
     // User's first name
-    @Column(nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
     // User's last name
-    @Column(nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     /**
      * A text field to store the user's tier list as JSON.
      * Example JSON structure could be something like:
      * {
+     * u
      * "S Tier": ["Apple", "Orange"],
      * "A Tier": ["Banana"]
      * }
@@ -42,8 +43,10 @@ public class User {
      * JSON to Map<String, List<String>> in service code.
      */
     @Lob
+    @Column(name = "tier_list_json")
     private String tierListJson;
     private String category;
+    @Column(name = "group_id")
     private String groupId;
 
     public User() {
