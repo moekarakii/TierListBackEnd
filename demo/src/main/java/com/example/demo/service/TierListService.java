@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 
 /**
  * This service handles all business logic related to Tier List entries.
- * It provides methods to create, retrieve, and delete entries based on user or category.
+ * It provides methods to create, retrieve, and delete entries based on user or
+ * category.
  */
 @Service
 public class TierListService {
@@ -71,7 +72,7 @@ public class TierListService {
         LocalDate end = LocalDate.parse(Time.getCurrentEndOfWeek());
 
         // Find the tier category that matches this week's range
-        Optional<TierCategory> categoryOptional = tierCategoryRepository.findByStart_timeAndEnd_time(start, end);
+        Optional<TierCategory> categoryOptional = tierCategoryRepository.findByStartTimeAndEndTime(start, end);
         if (categoryOptional.isEmpty()) {
             return new HashMap<>(); // No category found for this week
         }
