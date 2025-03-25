@@ -1,20 +1,20 @@
-package com.example.demo.config;
+// package com.example.demo.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.web.servlet.config.annotation.CorsRegistry;
+// import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+// import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
-@EnableWebMvc
-public class WebConfig implements WebMvcConfigurer {
+// @Configuration
+// @EnableWebMvc
+// public class WebConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        // Enable CORS for frontend domains
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "https://project2db-b60469abc86b.herokuapp.com/")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowCredentials(true);
-    }
-}
+//     @Override
+//     public void addCorsMappings(CorsRegistry registry) {
+//         // Enable CORS for frontend domains
+//         registry.addMapping("/**")
+//                 .allowedOrigins("http://localhost:5173", "https://project2db-b60469abc86b.herokuapp.com/")
+//                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                 .allowCredentials(true);
+//     }
+// }
