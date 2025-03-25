@@ -71,7 +71,7 @@ public class UserService {
         User user = userOpt.get();
         user.setUsername(updatedUser.getUsername());
         user.setEmail(updatedUser.getEmail());
-        user.setPassword(updatedUser.getPassword());
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
 
