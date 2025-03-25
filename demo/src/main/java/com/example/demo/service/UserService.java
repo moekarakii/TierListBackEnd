@@ -9,16 +9,19 @@ import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 import java.util.NoSuchElementException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final TierComparisonService tierComparisonService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, TierComparisonService tierComparisonService) {
+    public UserService(UserRepository userRepository, TierComparisonService tierComparisonService,  PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.tierComparisonService = tierComparisonService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Register user if email and username are unique
@@ -29,6 +32,8 @@ public class UserService {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             return "Email already in use";
         }
+        
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
         return "User registered successfully";
@@ -36,7 +41,14 @@ public class UserService {
 
     // Login using username and password
     public Optional<User> login(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password);
+         Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty(); 
     }
 
     // Get user by username
