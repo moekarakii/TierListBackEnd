@@ -72,7 +72,8 @@ public class TierListService {
         LocalDate end = LocalDate.parse(Time.getCurrentEndOfWeek());
 
         // Find the tier category that matches this week's range
-        Optional<TierCategory> categoryOptional = tierCategoryRepository.findByStartTimeAndEndTime(start, end);
+
+        Optional<TierCategory> categoryOptional = tierCategoryRepository.findByDateRange(start, end);
         if (categoryOptional.isEmpty()) {
             return new HashMap<>(); // No category found for this week
         }
@@ -80,7 +81,7 @@ public class TierListService {
         TierCategory category = categoryOptional.get();
 
         // Find all entries under this week's tier category
-        List<TierList> allEntries = tierListRepository.findByTierId(category.getTierId());
+        List<TierList> allEntries = tierListRepository.findByTierId(category.getTier_id());
 
         // Group entries by user ID
         return allEntries.stream()

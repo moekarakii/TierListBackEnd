@@ -32,7 +32,8 @@ public class TierList {
     private Integer tier;
 
     // Default constructor
-    public TierList() {}
+    public TierList() {
+    }
 
     // Constructor with parameters
     public TierList(Integer userId, Integer tierId, String entry, Integer tier) {

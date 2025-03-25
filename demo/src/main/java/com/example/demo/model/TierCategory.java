@@ -11,7 +11,7 @@ public class TierCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "tier_id")
-    private Long tierId;
+    private Long tier_id;
 
     @Column(name = "subject")
     private String subject;
@@ -28,7 +28,7 @@ public class TierCategory {
 
     // Constructor with parameters
     public TierCategory(Long tierId, String subject, LocalDate start_time, LocalDate end_time) {
-        this.tierId = tierId;
+        this.tier_id = tierId;
         this.subject = subject;
         this.start_time = start_time;
         this.end_time = end_time;
@@ -36,12 +36,12 @@ public class TierCategory {
 
     // Getters and Setters
 
-    public Long getTierId() {
-        return tierId;
+    public Long getTier_id() {
+        return tier_id;
     }
 
-    public void setTierId(Long tierId) {
-        this.tierId = tierId;
+    public void setTier_id(Long tierId) {
+        this.tier_id = tierId;
     }
 
     public String getSubject() {
@@ -71,7 +71,7 @@ public class TierCategory {
     @Override
     public String toString() {
         return "TierCategory{" +
-                "tierId=" + tierId +
+                "tierId=" + tier_id +
                 ", subject='" + subject + '\'' +
                 ", start_time=" + start_time +
                 ", end_time=" + end_time +
