@@ -49,6 +49,7 @@ public class AuthController {
 
         User storedUser = storedUserOpt.get();
         Map<String, Object> response = new HashMap<>();
+        response.put("id", storedUser.getId());
         response.put("firstName", storedUser.getFirstName());
         response.put("lastName", storedUser.getLastName());
         response.put("username", storedUser.getUsername());
@@ -67,6 +68,7 @@ public class AuthController {
 
         User user = userOpt.get();
         Map<String, Object> response = new HashMap<>();
+        response.put("id", user.getId());
         response.put("firstName", user.getFirstName());
         response.put("lastName", user.getLastName());
         response.put("username", user.getUsername());
