@@ -26,15 +26,17 @@ public class PasswordBcryptConfig {
             .cors().and()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-               "/api/auth/**",
-        "/api/chatroom/**",
-        "/api/groups/**",
-        "/api/tiers/**",
-        "/api/tiers/compare",
-        "/api/entries/**",
-        "/tierMode",
-        "/timer",
-        "/api/users/**").permitAll()
+               
+                "/",
+                 "/api/auth/**",
+                "/api/chatroom/**",
+                "/api/groups/**",
+                "/api/tiers/**",
+                "/api/tiers/compare",
+                "/api/entries/**",
+                "/tierMode",
+                "/timer",
+                "/api/users/**").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic().disable()
