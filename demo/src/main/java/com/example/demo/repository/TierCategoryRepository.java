@@ -10,5 +10,5 @@ public interface TierCategoryRepository extends JpaRepository<TierCategory, Long
 
     // Custom method to find a TierCategory by startTime and endTime (used for
     // filtering by time range)
-    Optional<TierCategory> findByStartTimeAndEndTime(LocalDate startTime, LocalDate endTime);
+    Optional<TierCategory> findByStartTimeAndEndTime(LocalDate start_time, LocalDate end_time);
 }
