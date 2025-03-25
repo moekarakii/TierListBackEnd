@@ -12,6 +12,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+    
 
     /**
      * Endpoint to trigger grouping.

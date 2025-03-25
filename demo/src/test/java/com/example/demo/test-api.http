@@ -1,8 +1,10 @@
-POST http://localhost:8080/api/tiers
+POST https://project2db-b60469abc86b.herokuapp.com/api/auth/register
 Content-Type: application/json
 
 {
-    "subject": "Cakes",
-    "start_time": "2025-03-22",
-    "end_time": "2025-03-22"
+  "username": "DaGoat",
+  "password": "LeBron1",
+  "email": "LeBron@example.com",
+  "firstName": "Lebron",
+  "lastName": "James"
 }
